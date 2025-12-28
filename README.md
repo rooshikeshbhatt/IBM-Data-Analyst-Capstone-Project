@@ -1,388 +1,335 @@
 <p align="center">
-    <img src="https://howtolearnmachinelearning.com/wp-content/uploads/2021/04/coursera_machine_learning_ibm.png?raw=true" alt="IBM and Coursera Logos" width="926" height="133"/>
+  <h1 align="center">IBM Data Analyst Capstone Project — Technology Trends Among Developers</h1>
+  <p align="center">
+    End-to-end capstone workflow: data collection → wrangling → EDA → visualization → dashboard → stakeholder presentation
+  </p>
+  <p align="center">
+    <b>Author:</b> Rooshikesh Bhatt
+  </p>
 </p>
 
-# Data Visualization with Python
+---
 
-This is the Capstone Project for Course 9, _IBM Data Analyst Capstone Project_. Part of IBM's Data Analyst Professional Certificate from Coursera.
+## Overview
 
-I will take on the role of a Data Analyst with a global IT and Business Services firm. In this role, I will be analyzing several datasets to help identify trends for emerging technologies. We have recently been hired as a Data Analyst by a global IT and business consulting services firm that is known for its expertise in IT solutions and its team of highly experienced IT consultants. To keep pace with changing technologies and remain competitive, our organization regularly analyzes data to help identify future skill requirements.
+This repository contains my capstone project work from the **IBM Data Analyst Professional Certificate**. The objective is to analyze developer survey data (and supporting sources) to identify:
 
-As a Data Analyst, I will be assisting with this initiative and have been tasked with collecting data from various sources and identifying trends for this year's report on emerging skills.
+- **Current technology usage** among developers  
+- **Future technology interest** (what developers want to work with next)  
+- **Demographic patterns** that can inform hiring, training, and technology strategy  
 
-### Task 1
+Deliverables include:
+- Jupyter notebooks implementing each stage of the analytics workflow  
+- A **dashboard export (PDF)** from the BI/dashboarding stage  
+- A **final presentation (PDF/PPTX)** summarizing findings and implications  
 
-The first task is to collect data for the technology skills that are most in demand from various sources including job postings, blog posts, and surveys. I will begin by scraping internet websites and accessing APIs to collect data in various formats like .csv files, excel sheets, and databases.
+---
 
-### Task 2
+## Repository Contents
 
-Once I've collected enough data, I will take the collected data and prepare it for analysis by using data wrangling techniques like finding duplicates, removing duplicates, finding missing values, and inputting missing values.
+### High-level structure
+- `Task 1/` — Data collection (APIs + web scraping) + initial dataset exploration  
+- `Task 2/` — Data wrangling (duplicates, missing values, normalization)  
+- `Task 3/` — Exploratory Data Analysis (EDA), distributions, outliers, correlations  
+- `Task 4/` — Data visualization (histograms, box plots, scatter, pie, stacked, line, bar) + SQL/database demo  
+- `Task 5/` — Dashboard export (PDF)  
+- `Task 6/` — Final stakeholder presentation (PDF + PPTX)
 
-### Task 3
+---
 
-Now that the data is ready, I will apply statistical techniques to analyze the data and identify insights and trends like: What are the top programming languages that are in demand? What are the top database skills that are in demand? What are the most popular IDEs? And Demographic data like age and education level distribution of developers.
+## Quick Links (Key Deliverables)
 
-### Task 4
+- **Dashboard (PDF export):** [`Task 5/Stack Overflow Dashboard.pdf`](Task%205/Stack%20Overflow%20Dashboard.pdf)
+- **Final Presentation (PDF):** [`Task 6/DataAnalystPresentation.pdf`](Task%206/DataAnalystPresentation.pdf)
+- **Final Presentation (PPTX):** [`Task 6/DataAnalystPresentation.pptx`](Task%206/DataAnalystPresentation.pptx)
 
-In the fourth task, I'll focus on choosing appropriate visualizations based on the data I want to present using charts, plots, and histograms to help reveal my findings and trends. I am going to access the Data from an SQL database and pull only the data I need into DataFrames.
+---
 
-### Task 5
+## Data Sources (as implemented in notebooks/presentation)
 
-For task 5, I will employ Cognos to create interactive dashboards to help analyze and present the data dynamically.
+The capstone uses multiple sources and collection methods:
 
-### Task 6
+1. **API-style dataset ingestion**
+   - Notebook uses a hosted `jobs.json` (GitHub Jobs API–style schema) and an example public API endpoint used in the lab context.
 
-For the final task, I will use my storytelling skills to provide a narrative and present the findings of my analysis.
+2. **Web scraping**
+   - Scrapes a provided HTML page containing programming languages and salary data and saves the output as a CSV.
 
-## Table of Contents
+3. **Stack Overflow Developer Survey (subset)**
+   - Survey datasets are pulled from hosted course storage (CSV and SQLite-based artifacts used throughout wrangling/EDA/visualization).
 
-- [Data Description](#data-description)
-- [Tools](#tools)
-- [Deliverables](#deliverables)
-  - [Task 1: Data Collection](#task-1-data-collection)
-  - [Task 2: Data Wrangling](#task-2-data-wrangling)
-  - [Task 3: Exploratory Data Analysis](#task-3-exploratory-data-analysis)
-  - [Task 4: Data Visualization](#task-4-data-visualization)
-  - [Task 5: Dashboard Creation](#task-5-dashboard-creation)
-  - [Task 6: Presentation of Findings](#task-6-presentation-of-findings)
-- [Stretch Goals](#stretch-goals)
+> Note: This repository primarily stores notebooks and final deliverables. The datasets are downloaded inside notebooks from hosted URLs during execution.
 
-## Data Description
+---
 
-Stack Overflow, a popular website for developers, conducted an online survey of software professionals across the world. The survey data was later open sourced by Stack Overflow. The actual data set has around 49,000+ responses from 177 countries across 62 questions.
+## Tools & Libraries
 
-The dataset I am going to use comes from the following source: https://survey.stackoverflow.co/ under a ODbL: Open Database License.
+Across the notebooks, the primary Python stack includes:
+- `pandas`, `numpy`
+- `matplotlib`, `seaborn`
+- `requests`, `bs4 (BeautifulSoup)`
+- `sqlite3`
+- `openpyxl`
+- Additional/optional: `scipy`, `sklearn`, `matplotlib-venn`
 
-I will be given a subset of the original data set in this capstone project. We will explore, analyze, and visualize this dataset and present my analysis.
+---
 
-Note: This randomised subset contains around 1/10th of the original data set. Any conclusions we draw after analyzing this subset may not reflect the real world scenario.
+## Detailed Workflow (Task-by-Task)
 
-The dataset is available as a .csv file here.
+### Task 1 — Data Collection
 
-The below table lists the questions asked in the survey and the column under which the response was collected.
+**Goal:** Collect data using APIs and web scraping, and explore the initial survey dataset.
 
-<details>
- <summary><strong>View Table</strong></summary>
-<table>
-  <thead>
-    <tr>
-      <th>Column Name</th>
-      <th>Question Text</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ResponseId</td>
-      <td>
-        Randomized respondent ID number.
-      </td>
-    </tr>
-    <tr>
-      <td>MainBranch</td>
-      <td>
-        Which of the following options best describes you today? 
-      </td>
-    </tr>
-    <tr>
-      <td>Age</td>
-      <td>What is your age?</td>
-    </tr>
-    <tr>
-      <td>Employment</td>
-      <td>What is your current employment status?</td>
-    </tr>
-    <tr>
-      <td>RemoteWork</td>
-      <td>How often do you work remotely?</td>
-    </tr>
-    <tr>
-      <td>Check</td>
-      <td>
-        Check Various verification or check questions related to survey consistency.
-      </td>
-    </tr>
-    <tr>
-      <td>CodingActivities</td>
-      <td>
-          What coding activities do you engage in (hobby, professional, and open-source contributions)?
-      </td>
-    </tr>
-    <tr>
-      <td>EdLevel</td>
-      <td>
-        What is the highest level of formal education you have completed?
-      </td>
-    </tr>
-    <tr>
-      <td>LearnCode</td>
-      <td>
-        How did you learn to code?
-      </td>
-    </tr>
-    <tr>
-      <td>LearnCodeOnline</td>
-      <td>Have you used online resources to learn coding?</td>
-    </tr>
-    <tr>
-      <td>TechDoc</td>
-      <td>
-        How do you use technical documentation?
-      </td>
-    </tr>
-    <tr>
-      <td>YearsCode</td>
-      <td>
-        How many years have you been coding?
-      </td>
-    </tr>
-    <tr>
-      <td>YearsCodePro</td>
-      <td>
-        How many years have you coded professionally?
-      </td>
-    </tr>
-    <tr>
-      <td>DevType</td>
-      <td>What is your role or type of development work you do?</td>
-    </tr>
-    <tr>
-      <td>OrgSize</td>
-      <td>
-        What is the size of the organization you work for?
-      </td>
-    </tr>
-    <tr>
-      <td>PurchaseInfluence</td>
-      <td>
-        How much influence do you have on purchasing technology at your company?
-      </td>
-    </tr>
-    <tr>
-      <td>BuyNewTool</td>
-      <td>How does your company decide whether to buy new tools or technology?</td>
-    </tr>
-    <tr>
-      <td>BuildvsBuy</td>
-      <td>
-        Does your company prefer to build or buy software?
-      </td>
-    </tr>
-    <tr>
-      <td>TechEndorse</td>
-      <td>Do you endorse any specific technologies at your company?</td>
-    </tr>
-    <tr>
-      <td>Country</td>
-      <td>In which country do you reside?</td>
-    </tr>
-    <tr>
-      <td>Currency</td>
-      <td>Which currency do you use day-to-day?</td>
-    </tr>
-    <tr>
-      <td>CompTotal</td>
-      <td>
-        What is your current total compensation (salary, bonuses, and so on)?
-      </td>
-    </tr>
-    <tr>
-      <td>LanguageHaveWorkedWith</td>
-      <td>Which programming languages have you worked with in the past year?</td>
-    </tr>
-    <tr>
-      <td>LanguageWantToWorkWith</td>
-      <td>
-        Which programming languages do you want to work with in the future?
-      </td>
-    </tr>
-    <tr>
-      <td>LanguageAdmired</td>
-      <td>Which programming languages do you admire most?</td>
-    </tr>
-    <tr>
-      <td>DatabaseHaveWorkedWith</td>
-      <td>
-        Which database technologies have you worked with in the past year?
-      </td>
-    </tr>
-    <tr>
-      <td>DatabaseWantToWorkWith</td>
-      <td>
-        Which database technologies do you want to work with in the future?
-      </td>
-    </tr>
-    <tr>
-      <td>DatabaseAdmired</td>
-      <td>
-        Which database technologies do you admire most?
-      </td>
-    </tr>
-    <tr>
-      <td>PlatformHaveWorkedWith</td>
-      <td>
-        Which platforms have you worked with in the past year?
-      </td>
-    </tr>
-    <tr>
-      <td>PlatformWantToWorkWith</td>
-      <td>
-        Which platforms do you want to work with in the future?
-      </td>
-    </tr>
-    <tr>
-      <td>PlatformAdmired</td>
-      <td>Which platforms do you admire most?</td>
-    </tr>
-    <tr>
-      <td>WebframeHaveWorkedWith</td>
-      <td>
-        Which web frameworks have you worked with in the past year?
-      </td>
-    </tr>
-    <tr>
-      <td>WebframeWantToWorkWith</td>
-      <td>Which web frameworks do you want to work with in the future?</td>
-    </tr>
-    <tr>
-      <td>WebframeAdmired</td>
-      <td>Which web frameworks do you admire most?</td>
-    </tr>
-    <tr>
-      <td>EmbeddedHaveWorkedWith</td>
-      <td>
-        Which embedded systems have you worked with in the past year?
-      </td>
-    </tr>
-    <tr>
-      <td>EmbeddedWantToWorkWith</td>
-      <td>Which embedded systems do you want to work with in the future?</td>
-    </tr>
-    <tr>
-      <td>EmbeddedAdmired</td>
-      <td>Which embedded systems do you admire most?</td>
-    </tr>
-    <tr>
-      <td>MiscTechHaveWorkedWith</td>
-      <td>
-        Which miscellaneous technologies have you worked with in the past year?
-      </td>
-    </tr>
-    <tr>
-      <td>MiscTechWantToWorkWith</td>
-      <td>Which miscellaneous technologies do you want to work with in the future?</td>
-    </tr>
-    <tr>
-      <td>MiscTechAdmired</td>
-      <td>Which miscellaneous technologies do you admire most?</td>
-    </tr>
-    <tr>
-      <td>OpSysPersonal</td>
-      <td>
-        What operating systems do you use for personal tasks?
-      </td>
-    </tr>
-    <tr>
-      <td>OpSysProfessional</td>
-      <td>
-        What operating systems do you use for professional tasks?
-      </td>
-    </tr>
-    <tr>
-      <td>SOVisitFreq</td>
-      <td>
-        How frequently do you visit Stack Overflow?
-      </td>
-    </tr>
-    <tr>
-      <td>SOAccount</td>
-      <td>
-        Do you have a Stack Overflow account?
-      </td>
-    </tr>
-    <tr>
-      <td>SOPartFreq</td>
-      <td>
-        How often do you participate in Q&A on Stack Overflow?
-      </td>
-    </tr>
-    <tr>
-      <td>AISelect</td>
-      <td>
-        How do you feel about artificial intelligence tools for development?
-      </td>
-    </tr>
-    <tr>
-      <td>AIBen</td>
-      <td>
-        What benefits have you experienced from using AI tools?
-      </td>
-    </tr>
-    <tr>
-      <td>AIChallenges</td>
-      <td>
-        What challenges have you faced while using AI tools?
-      </td>
-    </tr>
-    <tr>
-      <td>JobSat</td>
-      <td>
-        How satisfied are you with your current job?
-      </td>
-    </tr>
-  </tbody>
-</table>
+Notebooks:
+- **Collecting job data using APIs**
+  - [`Task 1/Capstone Project - Lab 2 Collecting_job_data_using_APIs-Lab.ipynb`](Task%201/Capstone%20Project%20-%20Lab%202%20Collecting_job_data_using_APIs-Lab.ipynb)
+  - Output artifacts written by notebook:
+    - `job-postings.xlsx`
+    - `job-postings-techno.xlsx`
 
-</details>
+- **Web scraping (review)**
+  - [`Task 1/Capstone Project - Lab 3 Web-Scraping-Review-Lab.ipynb`](Task%201/Capstone%20Project%20-%20Lab%203%20Web-Scraping-Review-Lab.ipynb)
 
-## Tools
+- **Web scraping (hands-on)**
+  - [`Task 1/Capstone Project - Lab 4 Web-Scraping-Lab.ipynb`](Task%201/Capstone%20Project%20-%20Lab%204%20Web-Scraping-Lab.ipynb)
+  - Output artifact written by notebook:
+    - `popular-languages.csv`
 
-- [`python`](https://www.python.org/downloads/) v3.12.2
-- [`pandas`](https://pandas.pydata.org/?utm_medium=Exinfluencer&utm_source=Exinfluencer&utm_content=000026UJ&utm_term=10006555&utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMML0187ENSkillsNetwork31430127-2021-01-01) for managing the data.
-- [`numpy`](https://numpy.org/?utm_medium=Exinfluencer&utm_source=Exinfluencer&utm_content=000026UJ&utm_term=10006555&utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMML0187ENSkillsNetwork31430127-2021-01-01) for mathematical operations.
-- [`seaborn`](https://seaborn.pydata.org/?utm_medium=Exinfluencer&utm_source=Exinfluencer&utm_content=000026UJ&utm_term=10006555&utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMML0187ENSkillsNetwork31430127-2021-01-01) for visualizing the data.
-- [`matplotlib`](https://matplotlib.org/?utm_medium=Exinfluencer&utm_source=Exinfluencer&utm_content=000026UJ&utm_term=10006555&utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMML0187ENSkillsNetwork31430127-2021-01-01) for additional plotting tools.
-- [`folium`](https://python-visualization.github.io/folium/latest/) for geospatial data visualization such as choropleth maps.
-- [`plotly`](https://plotly.com/python/) for interactive plotting tools.
-- [`Google Looker Studio`](https://lookerstudio.google.com/overview) for dashboards.
-- [`IBM Cognos Analytics`](https://www.ibm.com/products/cognos-analytics) for dashboards.
+- **Explore survey dataset**
+  - [`Task 1/Capstone Project - Lab 5 M1ExploreDataSet-lab_V2.ipynb`](Task%201/Capstone%20Project%20-%20Lab%205%20M1ExploreDataSet-lab_V2.ipynb)
 
-## Deliverables
+---
 
-### Task 1: Data Collection
+### Task 2 — Data Wrangling
 
-- [x] Collecting Data Using APIs
-- [x] Collecting Data Using Web Scraping
-- [x] Exploring Data
+**Goal:** Identify and treat duplicates, handle missingness, and normalize/transform relevant variables.
 
-### Task 2: Data Wrangling
+Notebooks:
+- **Finding duplicates**
+  - [`Task 2/Capstone Project - Lab 6 Finding Duplicates_v2.ipynb`](Task%202/Capstone%20Project%20-%20Lab%206%20Finding%20Duplicates_v2.ipynb)
 
-- [x] Finding Missing Values
-- [x] Determine Missing Values
-- [x] Finding Duplicates
-- [x] Removing Duplicates
-- [x] Normalizing Data
+- **Removing duplicates**
+  - [`Task 2/Capstone Project - Lab 7 Removing Duplicates_v2.ipynb`](Task%202/Capstone%20Project%20-%20Lab%207%20Removing%20Duplicates_v2.ipynb)
 
-### Task 3: Exploratory Data Analysis
+- **Finding missing values**
+  - [`Task 2/Capstone Project - Lab 8 Finding Missing Values.ipynb`](Task%202/Capstone%20Project%20-%20Lab%208%20Finding%20Missing%20Values.ipynb)
 
-- [x] Distribution
-- [x] Outliers
-- [x] Correlation
+- **Imputing missing values**
+  - [`Task 2/Capstone Project - Lab 9 Imput Missing Values.ipynb`](Task%202/Capstone%20Project%20-%20Lab%209%20Imput%20Missing%20Values.ipynb)
 
-### Task 4: Data Visualization
+- **Normalizing data**
+  - [`Task 2/Capstone Project - Lab 10 Normalizing Data.ipynb`](Task%202/Capstone%20Project%20-%20Lab%2010%20Normalizing%20Data.ipynb)
 
-- [x] Visualizing Distribution of Data
-- [x] Relationship
-- [x] Composition
-- [x] Comparison
+- **End-to-end wrangling notebook**
+  - [`Task 2/Capstone Project - Lab 11 M2DataWrangling-lab-v2.ipynb`](Task%202/Capstone%20Project%20-%20Lab%2011%20M2DataWrangling-lab-v2.ipynb)
 
-### Task 5: Dashboard Creation
+---
 
-- [x] Dashboards
+### Task 3 — Exploratory Data Analysis (EDA)
 
-### Task 6: Presentation of Findings
+**Goal:** Understand the dataset structure, distributions, outliers, and relationships/correlations.
 
-- [x] Final Presentation
+Notebooks:
+- **EDA**
+  - [`Task 3/Capstone Project - Lab 12 Exploratory Data Analysis.ipynb`](Task%203/Capstone%20Project%20-%20Lab%2012%20Exploratory%20Data%20Analysis.ipynb)
+  - Output artifact written by notebook:
+    - `modified_dataset.csv`
 
-## Stretch Goals
+- **Distributions**
+  - [`Task 3/Capstone Project - Lab 13 Finding How The Data is Distributed.ipynb`](Task%203/Capstone%20Project%20-%20Lab%2013%20Finding%20How%20The%20Data%20is%20Distributed.ipynb)
 
-- [ ] Create Dashboard in Google Looker or Tableau
+- **Outliers**
+  - [`Task 3/Capstone Project - Lab 14 Finding Outliers.ipynb`](Task%203/Capstone%20Project%20-%20Lab%2014%20Finding%20Outliers.ipynb)
+
+- **Correlation**
+  - [`Task 3/Capstone Project - Lab 15 Finding Correlation.ipynb`](Task%203/Capstone%20Project%20-%20Lab%2015%20Finding%20Correlation.ipynb)
+
+---
+
+### Task 4 — Data Visualization
+
+**Goal:** Create a comprehensive visualization suite, and demonstrate database-backed querying/analysis where applicable.
+
+Notebooks:
+- **Data visualization (includes SQL/database demos)**
+  - [`Task 4/Capstone Project - Lab 16 Data Visualization.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2016%20Data%20Visualization.ipynb)
+
+- **Histogram**
+  - [`Task 4/Capstone Project - Lab 17 Data Visualization - Histogram.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2017%20Data%20Visualization%20-%20Histogram.ipynb)
+
+- **Box plot**
+  - [`Task 4/Capstone Project - Lab 18 Box Plot.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2018%20Box%20Plot.ipynb)
+
+- **Scatter plot**
+  - [`Task 4/Capstone Project - Lab 19 Scatter Plot.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2019%20Scatter%20Plot.ipynb)
+
+- **Pie charts**
+  - [`Task 4/Capstone Project - Lab 21 Pie Charts.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2021%20Pie%20Charts.ipynb)
+
+- **Stacked charts**
+  - [`Task 4/Capstone Project - Lab 22 Stacked Charts.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2022%20Stacked%20Charts.ipynb)
+
+- **Line charts**
+  - [`Task 4/Capstone Project - Lab 23 Line Charts.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2023%20Line%20Charts.ipynb)
+
+- **Bar charts**
+  - [`Task 4/Capstone Project - Lab 24 Bar Charts.ipynb`](Task%204/Capstone%20Project%20-%20Lab%2024%20Bar%20Charts.ipynb)
+
+---
+
+## Results Snapshot (From Dashboard + Presentation)
+
+### Current Technology Usage — Top Languages (Have Worked With)
+
+| Rank | Language | Respondents |
+|---:|---|---:|
+| 1 | JavaScript | 14,943 |
+| 2 | SQL | 12,602 |
+| 3 | HTML/CSS | 12,410 |
+| 4 | TypeScript | 10,709 |
+| 5 | Python | 9,590 |
+| 6 | Bash/Shell (all shells) | 7,244 |
+| 7 | C# | 6,340 |
+| 8 | Java | 5,982 |
+| 9 | PHP | 4,644 |
+| 10 | PowerShell | 3,438 |
+
+### Future Technology Trend — Top Languages (Want To Work With)
+
+| Rank | Language | Respondents |
+|---:|---|---:|
+| 1 | JavaScript | 11,541 |
+| 2 | SQL | 10,944 |
+| 3 | TypeScript | 10,437 |
+| 4 | HTML/CSS | 10,016 |
+| 5 | Python | 8,919 |
+| 6 | Go | 5,661 |
+| 7 | Rust | 5,597 |
+| 8 | C# | 5,590 |
+| 9 | Bash/Shell (all shells) | 5,582 |
+| 10 | Java | 4,048 |
+
+### Databases — Current vs Future Interest (Highlights)
+
+**Current (Have Worked With):** PostgreSQL, MySQL, SQLite, MongoDB, Microsoft SQL Server, Redis, MariaDB, Elasticsearch, DynamoDB, Oracle.
+
+**Future (Want To Work With):**
+
+| Rank | Database | Respondents |
+|---:|---|---:|
+| 1 | PostgreSQL | 12,193 |
+| 2 | Redis | 6,384 |
+| 3 | SQLite | 6,295 |
+| 4 | MySQL | 6,204 |
+| 5 | MongoDB | 5,618 |
+| 6 | Microsoft SQL Server | 4,345 |
+| 7 | Elasticsearch | 3,665 |
+| 8 | MariaDB | 3,078 |
+| 9 | DynamoDB | 2,154 |
+| 10 | Supabase | 1,623 |
+
+### Platforms (Future Interest — From Dashboard)
+
+Top platforms developers want to work with include:
+- Amazon Web Services (AWS)
+- Microsoft Azure
+- Google Cloud
+- Cloudflare
+- Digital Ocean
+- Vercel
+- Firebase
+- Hetzner
+- Supabase
+- Netlify
+
+### Demographics (Age Distribution — From Dashboard)
+
+| Age group | Respondents |
+|---|---:|
+| 25–34 years old | 7,788 |
+| 35–44 years old | 5,149 |
+| 18–24 years old | 2,988 |
+| 45–54 years old | 2,053 |
+| 55–64 years old | 632 |
+| Under 18 years old | 136 |
+| 65 years or older | 75 |
+| Prefer not to say | 24 |
+
+---
+
+## Conclusions & Implications (From Final Presentation)
+
+Key takeaways communicated in the final deck:
+- Most technologies (languages, databases, platforms, frameworks, tools) remain broadly relevant into the coming year.
+- The analyzed respondent profile is concentrated in the 25–34 age group, with bachelor’s-level education and a strong representation of full-stack development roles.
+- Developers prioritize three major factors when choosing technologies:
+  1. Strong performance for complex ecosystems  
+  2. Comprehensive service offerings (AI/compute/storage/database/networking)  
+  3. Free editions/open options to reduce cost  
+
+Practical implications:
+- Continue and deepen training on consistently dominant technologies (e.g., JavaScript/SQL/TypeScript/Python).
+- Begin proactive upskilling for emerging interests (e.g., Go and Rust).
+- Maintain cloud and web ecosystem readiness (AWS/Azure, Node.js/React).
+
+---
+
+## How to Run Locally
+
+### 1) Clone the repository
+```bash
+git clone https://github.com/rooshikeshbhatt/IBM-Data-Analyst-Capstone-Project.git
+cd IBM-Data-Analyst-Capstone-Project
+```
+
+### 2) Create and activate a virtual environment (recommended)
+
+**Windows (PowerShell):**
+```bash
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+**macOS/Linux:**
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3) Install dependencies
+```bash
+pip install -U pip
+pip install pandas numpy matplotlib seaborn requests beautifulsoup4 openpyxl notebook
+```
+
+### 4) Launch Jupyter
+```bash
+jupyter notebook
+```
+
+### 5) Run notebooks by task order
+Start in **Task 1** and proceed sequentially through **Task 6**.
+
+> Some notebooks download datasets at runtime from hosted course storage (e.g., via `wget`). Ensure you have internet access when executing.
+
+---
+
+## Recommended Enhancements (Optional, Portfolio Upgrade)
+
+To make this repository more portfolio-ready, consider adding:
+- `requirements.txt` (or `environment.yml`)
+- `/assets/` folder with dashboard screenshots and a few key plots
+- A small “end-to-end pipeline” notebook/script that runs the main analysis workflow
+
+---
+
+## License
+
+MIT License (as stated in the repository).
+
+---
+
+## Acknowledgements
+
+- IBM Data Analyst Professional Certificate (capstone structure and lab framework)
+- Stack Overflow Developer Survey (source dataset referenced by the capstone)
